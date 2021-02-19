@@ -72,7 +72,7 @@ impl Driver {
 
         let min_angle = self.config.physical.steer_min_angle;
         let max_angle = self.config.physical.steer_max_angle;
-        let angle = (max_angle - min_angle) / 2.0 * v;
+        let angle = (max_angle - min_angle) / 2.0 * v * -1.0;
 
         self.servo.set_angle(90.0 + angle);
 

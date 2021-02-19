@@ -13,7 +13,9 @@ use crate::{
 
 fn main() -> Result<()> {
     // initialize hardware
-    let config: Config = Default::default();
+    let mut config: Config = Default::default();
+    config.servo.offset_duty = -0.006;
+
     let mut driver = Driver::new(config)?;
 
     // initialize controller handling thread

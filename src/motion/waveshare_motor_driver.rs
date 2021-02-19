@@ -18,21 +18,21 @@ impl MotorChannel {
     pub fn throttle(&self) -> pca9685::Channel {
         match self {
             Self::A => pca9685::Channel::C0,
-            Self::B => pca9685::Channel::C3,
+            Self::B => pca9685::Channel::C5,
         }
     }
 
     pub fn dir1(&self) -> pca9685::Channel {
         match self {
-            Self::A => pca9685::Channel::C1,
+            Self::A => pca9685::Channel::C2,
             Self::B => pca9685::Channel::C4,
         }
     }
 
     pub fn dir2(&self) -> pca9685::Channel {
         match self {
-            Self::A => pca9685::Channel::C2,
-            Self::B => pca9685::Channel::C5,
+            Self::A => pca9685::Channel::C1,
+            Self::B => pca9685::Channel::C3,
         }
     }
 }
@@ -51,11 +51,11 @@ where
         address: A,
         prescale: u8,
     ) -> Result<Self, pca9685::Error<E>> {
-        let driver = pca9685::Pca9685::new(i2c, address)?;
-        let mut rv = Self { driver };
-        rv.set_prescale(prescale)?;
+        let mut driver = pca9685::Pca9685::new(i2c, address)?;
+        driver.enable()?;
+        driver.set_prescale(prescale)?;
 
-        Ok(rv)
+        Ok(Self { driver })
     }
 
     pub fn set_prescale(&mut self, v: u8) -> Result<(), pca9685::Error<E>> {
@@ -70,12 +70,12 @@ where
     ) -> Result<(), pca9685::Error<E>> {
         match dir {
             MotorDirection::ClockWise => {
-                self.driver.set_channel_full_on(channel.dir1(), 0)?;
-                self.driver.set_channel_full_off(channel.dir2())?;
+                self.driver.set_channel_on_off(channel.dir1(), 0, 4095)?;
+                self.driver.set_channel_on_off(channel.dir2(), 4095, 0)?;
             }
             MotorDirection::CounterClockWise => {
-                self.driver.set_channel_full_off(channel.dir1())?;
-                self.driver.set_channel_full_on(channel.dir2(), 0)?;
+                self.driver.set_channel_on_off(channel.dir2(), 0, 4095)?;
+                self.driver.set_channel_on_off(channel.dir1(), 4095, 0)?;
             }
         }
         Ok(())

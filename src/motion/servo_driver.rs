@@ -74,6 +74,7 @@ where
         };
 
         let duty = self.angle_to_duty(angle);
+
         self.pwm.set_duty(duty);
         self.angle = angle;
         self
