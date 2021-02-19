@@ -3,6 +3,11 @@ name = "rpi0wcar"
 version = "0.1.0"
 authors = ["Aaron Qian <aq1018@gmail.com>"]
 edition = "2018"
+license = "MIT"
+license-file = "./LICENSE"
+description = "Bluetooth / PS Dualshock 4 controlled RC car with the help of RaspberryPi Zero W."
+readme = "./README.md"
+repository = "https://github.com/aq1018/rpi0wcar"
 
 [dependencies]
 embedded-hal = {version = "0.2", features = ["unproven"]}
@@ -16,7 +21,12 @@ serde_json = {version = "1.0", default-features = false, features = ["alloc"] }
 gilrs = "0.8"
 
 [profile.release]
-opt-level = 'z'  # Optimize for size.
+opt-level = 'z'
 lto = true
 codegen-units = 1
 panic = 'abort'
+
+[package.metadata.deb]
+maintainer-scripts = "maintainer-scripts/"
+systemd-units = { enable = true }
+extended-description = "Bluetooth / PS Dualshock 4 controlled RC car with the help of RaspberryPi Zero W."

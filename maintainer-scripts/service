@@ -1,0 +1,8 @@
+[Unit]
+Description=RaspberryPi Zero W Controlled RC car
+
+[Service]
+ExecStart=/usr/bin/rpi0wcar
+
+[Install]
+WantedBy=multi-user.target
