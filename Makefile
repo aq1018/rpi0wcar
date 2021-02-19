@@ -2,13 +2,14 @@ bootstrap:
 	docker build -t rpi0wcar/cross:latest .
 
 build: bootstrap
-	cross build --target=arm-unknown-linux-gnueabihf
+	cross build --target=arm-unknown-linux-gnueabihf --release
+	cargo strip --target armv-unknown-linux-gnueabihf
 
 clean:
 	cross clean
 
 deploy: build
-	scp target/arm-unknown-linux-gnueabihf/debug/rpi0wcar pi@pi0wcar:
+	scp target/arm-unknown-linux-gnueabihf/release/rpi0wcar pi@rpi0wcar:
 
 run: deploy
-	ssh pi@pi0w ./rpi0wcar
+	ssh pi@rpi0wcar ./rpi0wcar

@@ -57,7 +57,7 @@ impl Driver {
             self.motor.set_dir(channel, CounterClockWise)?;
         }
 
-        let v = (65535_f64 * v.abs()) as u16;
+        let v = (4095_f64 * v.abs()) as u16;
         self.motor.set_throttle(channel, v)?;
 
         Ok(())
@@ -71,7 +71,7 @@ impl Driver {
         }
 
         let min_angle = self.config.physical.steer_min_angle;
-        let max_angle = self.config.physical.steer_min_angle;
+        let max_angle = self.config.physical.steer_max_angle;
         let angle = (max_angle - min_angle) / 2.0 * v;
 
         self.servo.set_angle(90.0 + angle);

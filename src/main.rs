@@ -26,7 +26,7 @@ fn main() -> Result<()> {
                 println!("Controller Connected!");
             }
             ControllerEvent::Disconnected => {
-                println!("Controller Connected!");
+                println!("Controller Disconnected!");
             }
             ControllerEvent::Steer(v) => {
                 driver.steer(v)?;
