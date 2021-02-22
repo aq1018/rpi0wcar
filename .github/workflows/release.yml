@@ -1,19 +1,16 @@
-name: rpi0wcar build
+name: Release
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+    - "v*"
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-    name: Build Deb
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
@@ -57,3 +54,23 @@ jobs:
       with:
         command: deb
         args: --no-build --no-strip --target arm-unknown-linux-gnueabihf 
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: target/arm-unknown-linux-gnueabihf/debian/rpi0wcar_{{ github.ref }}_armhf.deb
+        asset_name: rpi0wcar_{{ github.ref }}_armhf.deb
+        asset_content_type: application/vnd.debian.binary-package
