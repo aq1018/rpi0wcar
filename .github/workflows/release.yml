@@ -12,11 +12,12 @@ jobs:
   build:
     name: Release
     runs-on: ubuntu-latest
-    env:
-      TAG: ${{ github.ref##*/ }}
-      VERSION: ${{ github.ref##*/v }}
-
     steps:
+    - name: Setup
+      id: setup
+      run: |
+        echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
+        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
     - name: Checkout
       uses: actions/checkout@v2
     
@@ -63,8 +64,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.TAG }}
-        release_name: Release ${{ env.VERSION }}
+        tag_name: ${{ steps.setup.outputs.TAG }}
+        release_name: Release ${{ steps.setup.outputs.VERSION }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -73,6 +74,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: target/arm-unknown-linux-gnueabihf/debian/rpi0wcar_${{ env.VERSION }}_armhf.deb
-        asset_name: rpi0wcar_${{ env.VERSION }}_armhf.deb
+        asset_path: target/arm-unknown-linux-gnueabihf/debian/rpi0wcar_${{ steps.setup.outputs.VERSION }}_armhf.deb
+        asset_name: rpi0wcar_${{ steps.setup.outputs.VERSION }}_armhf.deb
         asset_content_type: application/vnd.debian.binary-package
