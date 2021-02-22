@@ -1,44 +1,59 @@
-name: rpi0wcar
+name: rpi0wcar build
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-    name: rpi0wcar build
+    name: Build Deb
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Install Rust Toolchain
+      uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
         target: arm-unknown-linux-gnueabihf
         override: true
-    - uses: actions-rs/cargo@v1
+    
+    - name: Install cargo-strip
+      uses: actions-rs/cargo@v1
       with:
         command: install
         args: cargo-strip
-    - uses: actions-rs/cargo@v1
+    
+    - name: Install cargo-deb
+      uses: actions-rs/cargo@v1
       with:
         command: install
         args: cargo-deb
-    - uses: actions-rs/cargo@v1
+
+    - name: Crosscompile binary
+      uses: actions-rs/cargo@v1
       with:
         use-cross: true
         command: build
         args: --target=arm-unknown-linux-gnueabihf --release
-    - uses: actions-rs/cargo@v1
+
+    - name: Strip binary
+      uses: actions-rs/cargo@v1
       with:
-        use-cross: true
         command: strip
         args: --target=arm-unknown-linux-gnueabihf
-    - uses: actions-rs/cargo@v1
+
+    - name: Build deb package
+      uses: actions-rs/cargo@v1
       with:
-        use-cross: true
         command: deb
         args: --no-build --no-strip --target arm-unknown-linux-gnueabihf 
