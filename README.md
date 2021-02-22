@@ -87,19 +87,33 @@ I made a `deb` package for easy installation.
 * Up on installation, the package creates a `systemd` service and enable/starts the app automatically.
 * There is a config file located at `/usr/local/etc/rpi0wcar.json`. You can customize it to fit your projects needs. e.g., setting offset duty cycles for steering, as every servo is slightly different due to manufactoring differences. The default json file looks like this:
 
-```json
+```js
 {
     "physical": {
+        // steering to the right, max angle
         "steer_max_angle": 45.0,
+        // steering to the left, max angle
         "steer_min_angle": -45.0
     },
     "motor": {
+        // motor channel on the Motor Driver Hat
         "channel": "A",
+        // I2C address of the Motor Driver Hat ( default )
         "i2c_address": 64,
+        // Prescale value for PCA9685. This chip is used to drive the motor.
+        // Please see datasheet for more details:
+        //   https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf
         "prescale": 100
     },
     "servo": {
+        // Servo motors generally have slight inaccuracies,
+        // you can play with this value if your front wheels are not straight
+        // in neutral position.
         "offset_duty":-0.006,
+
+        // Hardware PWM channel of the Pi. It is PWM0 is GPIO 18, and PWM1 is GPIO 19.
+        // If you don't know what it is, just leave it as PWM0, and hook the servo
+        // control wire to GPIO 18.
         "pwm_channel":"Pwm0"
     }
 }
