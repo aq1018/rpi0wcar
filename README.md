@@ -3,7 +3,7 @@ Bluetooth game pad controlled 3D printed RC Car with Raspberry Pi Zero W
 
 ## Hardware
 
-I used [`openzcar`](https://github.com/alexyu132/zcar) as the basis of this project, and modified the electronics. Please follow the instruction there to build your RC car. The main reason I chose his design is due to its simplicity and I had most of the parts needed already to construct it. You can choose any design as long as it uses a brushed motor for throttle, and a servo for steering.
+I used [`openzcar`](https://github.com/alexyu132/zcar) as the basis of this project, and modified the electronics. Please follow the instruction there to build your RC car. The main reason I chose his design is due to its simplicity and I had most of the parts needed on hand. You can choose any RC car design as long as it uses a brushed motor for throttle, and a servo for steering.
 
 For electronics, I used:
 
@@ -12,9 +12,6 @@ For electronics, I used:
 3. [JST Connectors (optional, but safer)](https://www.amazon.com/gp/product/B07R4ZBBC4/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1)
 
 I chose to use the Motor Driver Hat because it also doubles as a Linear Voltage Regulator to power the Pi. I initially used a buck converter and hand made L293D circuit board, and it was a bit bigger and much messier than the Motor Driver Hat, so I changed my design to use the Hat instead.
-
-[TODO] Add photos.
-[TODO] Add modified bottom plate STL file ( enlarged it in order to secure rpi 0w).
 
 ## Setup Your Raspberry Pi Zero W
 
@@ -77,17 +74,34 @@ connect AA:BB:CC:DD:EE:FF
 trust AA:BB:CC:DD:EE:FF
 ```
 
-This completes the bluetooth pairing process. Finally, type:
+At this point the light on the PS4 Controller should turned blue, indiciating it is now connected to the Pi.
 
-```
-exit
-```
-
-to quit the REPL prompt.
+This completes the bluetooth pairing process, and you can type `exit` to quit the REPL prompt.
 
 ### Install `rpi0wcar.deb`
 
-I made a `deb` package for easy installation. This package creates a systemd service to start the app automatically upon boot.
+I made a `deb` package for easy installation. 
+
+* Up on installation, the package creates a `systemd` service and enable/starts the app automatically.
+* There is a config file located at `/usr/local/etc/rpi0wcar.json`. You can customize it to fit your projects needs. e.g., setting offset duty cycles for steering, as every servo is slightly different due to manufactoring differences. The default json file looks like this:
+
+```json
+{
+    "physical": {
+        "steer_max_angle": 45.0,
+        "steer_min_angle": -45.0
+    },
+    "motor": {
+        "channel": "A",
+        "i2c_address": 64,
+        "prescale": 100
+    },
+    "servo": {
+        "offset_duty":-0.006,
+        "pwm_channel":"Pwm0"
+    }
+}
+```
 
 ```
 cd /tmp
@@ -103,3 +117,7 @@ ps aux | grep rpi0wcar
 ```
 
 You should see the app is running, and you should be able to control your RC car via a PS4 controller.
+
+- [TODO] Add photos.
+- [TODO] Add modified bottom plate STL file ( enlarged it in order to secure rpi 0w).
+- [TODO] Document `rpi0wcar.json` cnofig file.
