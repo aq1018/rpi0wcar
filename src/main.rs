@@ -11,7 +11,7 @@ use crate::{
     motion::Driver,
 };
 
-const CONFIG_PATH: &str = "/etc/rpi0wcar.json";
+const CONFIG_PATH: &str = "/usr/local/etc/rpi0wcar.json";
 
 fn main() -> Result<()> {
     // load config

@@ -27,6 +27,19 @@ codegen-units = 1
 panic = 'abort'
 
 [package.metadata.deb]
-maintainer-scripts = "maintainer-scripts/"
+maintainer = "Aaron Qian <aq1018@gmail.com>"
+copyright = "2021, Aaron Qian"
+depends = "$auto, systemd"
+conf-files = ["/usr/local/etc/rpi0wcar.json", "/etc/systemd/system/rpi0wcar.service"]
+maintainer-scripts = "assets/"
 systemd-units = { enable = true }
-extended-description = "Bluetooth / PS Dualshock 4 controlled RC car with the help of RaspberryPi Zero W."
+extended-description = """\
+Bluetooth / PS Dualshock 4 controlled RC car with the help of RaspberryPi Zero W.\
+"""
+section = "admin"
+priority = "optional"
+assets = [
+    ["target/arm-unknown-linux-gnueabihf/release/rpi0wcar", "/usr/local/bin/", "755"],
+    ["assets/rpi0wcar.json", "/usr/local/etc/", "644"],
+    ["assets/rpi0wcar.service", "/etc/systemd/system/", "644"],
+]
