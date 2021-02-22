@@ -1,0 +1,15 @@
+{
+    "physical": {
+        "steer_max_angle": 45.0,
+        "steer_min_angle": -45.0
+    },
+    "motor": {
+        "channel": "A",
+        "i2c_address": 64,
+        "prescale": 100
+    },
+    "servo": {
+        "offset_duty":-0.006,
+        "pwm_channel":"Pwm0"
+    }
+}

@@ -1,5 +1,9 @@
+use anyhow::Result;
 use rppal as pi;
 use serde::{Deserialize, Serialize};
+use std::fs::File;
+use std::io::BufReader;
+use std::path::Path;
 
 use crate::motion::waveshare_motor_driver::MotorChannel;
 
@@ -67,4 +71,11 @@ pub struct Config {
     pub physical: Physical,
     pub servo: Servo,
     pub motor: Motor,
+}
+
+impl Config {
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Config> {
+        let config = serde_json::from_reader(BufReader::new(File::open(path)?))?;
+        Ok(config)
+    }
 }

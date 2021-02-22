@@ -1,2 +1,2 @@
 [target.arm-unknown-linux-gnueabihf]
-image = "rpi0wcar/cross"
+image = "aq1018/rpi0wcar_builder"

@@ -11,11 +11,13 @@ use crate::{
     motion::Driver,
 };
 
-fn main() -> Result<()> {
-    // initialize hardware
-    let mut config: Config = Default::default();
-    config.servo.offset_duty = -0.006;
+const CONFIG_PATH: &str = "/etc/rpi0wcar.json";
 
+fn main() -> Result<()> {
+    // load config
+    let config = Config::from_file(CONFIG_PATH)?;
+
+    // initialize hardware
     let mut driver = Driver::new(config)?;
 
     // initialize controller handling thread
