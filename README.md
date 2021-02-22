@@ -22,7 +22,7 @@ follow this guide to setup your Pi Zero with headless ssh access: https://desert
 
 ### Update System
 
-```
+```bash
 sudo apt update -y
 sudo apt dist-upgrade -y
 sudo reboot
@@ -32,7 +32,7 @@ sudo reboot
 
 Login via SSH, and type the following:
 
-```
+```bash
 sudo raspi-config
 ```
 
@@ -40,7 +40,7 @@ Navigate to: `Interface Options` -> `I2C`, and select Yes, then save and exit.
 
 ### Enable Hardware PWM
 
-```
+```bash
 echo 'dtoverlay=pwm' | sudo tee -a /boot/config.txt`
 sudo reboot
 ```
@@ -105,7 +105,7 @@ I made a `deb` package for easy installation.
 
 To install the package:
 
-```
+```bash
 cd /tmp
 curl https://github.com/aq1018/rpi0wcar/releases/download/v0.1.0/rpi0wcar_0.1.0_armhf.deb -O
 sudo dpkg -i /tmp/rpi0wcar_0.1.0_armhf.deb
