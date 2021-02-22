@@ -3,7 +3,7 @@ bootstrap:
 
 build: bootstrap
 	cross build --target=arm-unknown-linux-gnueabihf --release
-	cargo strip --target armv-unknown-linux-gnueabihf
+	cargo strip --target arm-unknown-linux-gnueabihf
 	cargo-deb -v --no-build --target arm-unknown-linux-gnueabihf --no-strip
 
 clean:
