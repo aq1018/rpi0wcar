@@ -74,6 +74,8 @@ connect AA:BB:CC:DD:EE:FF
 trust AA:BB:CC:DD:EE:FF
 ```
 
+Replace `AA:BB:CC:DD:EE:FF` with your actual controller MAC address.
+
 At this point the light on the PS4 Controller should turned blue, indiciating it is now connected to the Pi.
 
 This completes the bluetooth pairing process, and you can type `exit` to quit the REPL prompt.
