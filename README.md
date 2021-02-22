@@ -103,6 +103,8 @@ I made a `deb` package for easy installation.
 }
 ```
 
+To install the package:
+
 ```
 cd /tmp
 curl https://github.com/aq1018/rpi0wcar/releases/download/v0.1.0/rpi0wcar_0.1.0_armhf.deb -O
